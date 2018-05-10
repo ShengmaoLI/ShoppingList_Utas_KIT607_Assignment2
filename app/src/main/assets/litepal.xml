@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="ShoppingListDatabase"></dbname>
+    <version value="1"></version>
+    <list>
+        <mapping class="assignment2.sli18.utas.edu.au.lsmshopping.Entity.ShoppingItem">
+        </mapping>
+
+        <mapping class="assignment2.sli18.utas.edu.au.lsmshopping.Entity.ShoppingList">
+        </mapping>
+    </list>
+</litepal>
