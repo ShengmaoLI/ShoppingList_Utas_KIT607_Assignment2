@@ -1,8 +1,11 @@
 package assignment2.sli18.utas.edu.au.lsmshopping;
 
+import android.support.design.internal.NavigationMenu;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,14 +20,28 @@ import assignment2.sli18.utas.edu.au.lsmshopping.Entity.ShoppingList;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Test
+   //---
     private static final String TAG = "MainActivity";
-    //---------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Button b1 = findViewById(R.id.b1);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationView n1 = (NavigationView) findViewById(R.id.navigation_view);
+                n1.setVisibility(View.GONE);
+            }
+        });
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater(R.menu.title_symbol,menu);
+//                return true;
+//    }
 
     public static void showData(Class table) throws Exception{
         //show data
