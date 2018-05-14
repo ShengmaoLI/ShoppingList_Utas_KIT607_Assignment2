@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddItemActivity">
+
+    <assignment2.sli18.utas.edu.au.lsmshopping.TitleLayout
+        android:id="@+id/titleLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </assignment2.sli18.utas.edu.au.lsmshopping.TitleLayout>
+
+    <EditText
+        android:id="@+id/nameEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/add_name_hint"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_img_add"
+        app:layout_constraintTop_toBottomOf="@+id/titleLayout2" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/background_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceEdit" />
+
+    <EditText
+        android:id="@+id/tagEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/add_tag"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_img_add"
+        app:layout_constraintTop_toBottomOf="@+id/nameEdit" />
+
+    <ImageView
+        android:id="@+id/item_img_add"
+        android:layout_width="111dp"
+        android:layout_height="124dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleLayout2"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+
+    <ImageButton
+        android:id="@+id/imgEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView10"
+        app:layout_constraintStart_toStartOf="@+id/item_img_add"
+        app:layout_constraintTop_toBottomOf="@+id/item_img_add"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <EditText
+        android:id="@+id/commentEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/add_comment_hint"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_img_add"
+        app:layout_constraintTop_toBottomOf="@+id/tagEdit" />
+
+    <EditText
+        android:id="@+id/quantityEdit"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/submit_add"
+        app:layout_constraintTop_toBottomOf="@+id/commentEdit" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Quantity"
+        app:layout_constraintBottom_toBottomOf="@+id/quantityEdit"
+        app:layout_constraintEnd_toStartOf="@+id/quantityEdit"
+        app:layout_constraintTop_toTopOf="@+id/quantityEdit" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Price"
+        app:layout_constraintBottom_toBottomOf="@+id/priceEdit"
+        app:layout_constraintEnd_toStartOf="@+id/priceEdit"
+        app:layout_constraintTop_toTopOf="@+id/priceEdit" />
+
+    <EditText
+        android:id="@+id/priceEdit"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/commentEdit"
+        app:layout_constraintTop_toBottomOf="@+id/commentEdit" />
+
+    <ListView
+        android:layout_width="344dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceEdit"
+        app:layout_constraintVertical_bias="0.100000024" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginBottom="52dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/background_dark"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/submit_add"
+        android:layout_width="44dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/_dynamic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentEdit"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/money_symbol"
+        app:layout_constraintBottom_toBottomOf="@+id/priceEdit"
+        app:layout_constraintStart_toEndOf="@+id/priceEdit"
+        app:layout_constraintTop_toTopOf="@+id/priceEdit" />
+
+
+</android.support.constraint.ConstraintLayout>

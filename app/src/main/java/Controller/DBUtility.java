@@ -1,12 +1,12 @@
-package assignment2.sli18.utas.edu.au.lsmshopping.Controller;
+package Controller;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
 import java.util.List;
 
-import assignment2.sli18.utas.edu.au.lsmshopping.Entity.ShoppingItem;
-import assignment2.sli18.utas.edu.au.lsmshopping.Entity.ShoppingList;
+import Entity.ShoppingItem;
+import Entity.ShoppingList;
 
 /**
  * Created by simon on 9/05/2018.

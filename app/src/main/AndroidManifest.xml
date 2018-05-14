@@ -17,6 +17,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".AddItemActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.AddItemActivity" />
+
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".StatisticsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.StatisticsActivity" />
+
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package assignment2.sli18.utas.edu.au.lsmshopping.Entity;
+package Entity;
 
 import org.litepal.crud.DataSupport;
 

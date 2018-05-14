@@ -1,10 +1,9 @@
-package assignment2.sli18.utas.edu.au.lsmshopping.Controller;
+package Controller;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import assignment2.sli18.utas.edu.au.lsmshopping.Entity.ShoppingItem;
+import Entity.ShoppingItem;
 
 /**
  * Created by simon on 9/05/2018.

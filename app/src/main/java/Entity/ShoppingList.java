@@ -1,13 +1,22 @@
-package assignment2.sli18.utas.edu.au.lsmshopping.Entity;
+package Entity;
 
 import org.litepal.crud.DataSupport;
 
 public class ShoppingList extends DataSupport{
     private int id;
     private String name = "";
+    private boolean currentList = false;
 
     public int getId() {
         return id;
+    }
+
+    public boolean isCurrentList() {
+        return currentList;
+    }
+
+    public void setCurrentList(boolean currentList) {
+        this.currentList = currentList;
     }
 
     public void setId(int id) {
