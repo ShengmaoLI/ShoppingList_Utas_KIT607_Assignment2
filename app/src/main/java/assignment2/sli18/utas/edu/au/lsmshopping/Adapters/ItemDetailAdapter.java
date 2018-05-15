@@ -71,11 +71,9 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
                 if ( !shoppingItem.isPurchased() ){
                     shoppingItem.setPurchased(true);
                     holder.radioBtnPurchased.setChecked(true);
-                    shoppingItem.save();
                 }else {
                     shoppingItem.setPurchased(false);
                     holder.radioBtnPurchased.setChecked(false);
-                    shoppingItem.save();
                 }
             }
         });
@@ -99,12 +97,12 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 ShoppingItem shoppingItem = mShoppingItems.get(position);
-                Toast.makeText(v.getContext(),"you click to delete item named: " + shoppingItem.getName(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(),"you click to delete item named: " + shoppingItem.getName()
+                        + "-------" + position +"--------",Toast.LENGTH_SHORT).show();
                 DataSupport.delete(ShoppingItem.class, shoppingItem.getId());
                 mShoppingItems.remove(position);
                 //remove
                 notifyItemRemoved(position);
-                notifyDataSetChanged();
             }
         });
 

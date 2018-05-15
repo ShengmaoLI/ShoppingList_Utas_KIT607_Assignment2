@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LSMShopping.iml" filepath="$PROJECT_DIR$/LSMShopping.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ShoppingList_Utas_KIT607_Assignment2.iml" filepath="$PROJECT_DIR$/ShoppingList_Utas_KIT607_Assignment2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

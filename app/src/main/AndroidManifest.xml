@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AddItemActivity" >
+        <activity android:name=".AddItemActivity"
+                  android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.AddItemActivity" />
 

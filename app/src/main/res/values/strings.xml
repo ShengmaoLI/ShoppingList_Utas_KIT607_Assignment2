@@ -12,4 +12,8 @@
     <string name="add_name_hint">Name</string>
     <string name="add_comment_hint">Comment</string>
     <string name="money_symbol">$</string>
+    <string name="Purchased_Str">Recent Purchased Items</string>
+    <string name="Added_Items">Added Items</string>
+    <string name="Expenditure">Expenditure</string>
+    <string name="Finish">Finish</string>
 </resources>
