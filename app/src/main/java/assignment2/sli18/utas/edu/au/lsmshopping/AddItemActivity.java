@@ -6,8 +6,11 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,23 +18,38 @@ import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Controller.DBUtility;
 import Entity.ShoppingItem;
+import assignment2.sli18.utas.edu.au.lsmshopping.Adapters.PurchasedListAdapter;
 
 public class AddItemActivity extends AppCompatActivity {
 
     private static final String TAG = "AddItemActivity";
+    private static PurchasedListAdapter purchasedListAdapter;
+    //
+    private List<ShoppingItem> purchasedList =
+            DataSupport.where("purchased = ?", "true").find(ShoppingItem.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+
+        //remove initial title layout
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.hide();
         }
+
+        /*
+        * The section of editing
+        * The first section in this activity
+        * */
         //get each views
+
         final EditText editName = findViewById(R.id.nameEdit);
         final EditText editTag = findViewById(R.id.tagEdit);
         final EditText editComment = findViewById(R.id.commentEdit);
@@ -42,7 +60,7 @@ public class AddItemActivity extends AppCompatActivity {
 
         //get data test
         final Integer itemId = getIntent().getIntExtra("itemId", -1);
-        if (itemId != -1){
+        if (itemId != -1) {
             ShoppingItem shoppingItem = DataSupport.find(ShoppingItem.class, itemId);
             editName.setText(shoppingItem.getName());
             editTag.setText(shoppingItem.getTag());
@@ -55,22 +73,22 @@ public class AddItemActivity extends AppCompatActivity {
         submitImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (itemId != -1){
+                if (itemId != -1) {
                     ShoppingItem shoppingItem = DataSupport.find(ShoppingItem.class, itemId);
                     shoppingItem.setName(editName.getText().toString());
                     shoppingItem.setTag(editTag.getText().toString());
                     shoppingItem.setCommend(editComment.getText().toString());
                     shoppingItem.setPrice(Double.parseDouble(editPrice.getText().toString()));
                     shoppingItem.setQuantity(Integer.parseInt(editQuantity.getText().toString()));
-                    if (!shoppingItem.getName().equals("")){
+                    if (!shoppingItem.getName().equals("")) {
                         shoppingItem.save();
                         MainActivity.itemDetailAdapter.notifyDataSetChanged();
-                        Toast.makeText(AddItemActivity.this,"Edit Item Successfully!",Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(AddItemActivity.this,"Editing Item failed! \n"
-                                + "at least type a name!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddItemActivity.this, "Edit Item Successfully!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AddItemActivity.this, "Editing Item failed! \n"
+                                + "at least type a name!", Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     Double price = !editPrice.getText().toString().equals("") ? Double.parseDouble(editPrice.getText().toString()) : 0;
                     Integer quantity = !editQuantity.getText().toString().equals("") ? Integer.parseInt(editQuantity.getText().toString()) : 0;
                     ShoppingItem shoppingItem = new ShoppingItem();
@@ -79,19 +97,42 @@ public class AddItemActivity extends AppCompatActivity {
                     shoppingItem.setCommend(editComment.getText().toString());
                     shoppingItem.setPrice(price);
                     shoppingItem.setQuantity(quantity);
-                    if (!shoppingItem.getName().equals("")){
+                    if (!shoppingItem.getName().equals("")) {
                         shoppingItem.save();
                         MainActivity.itemDetailAdapter.notifyDataSetChanged();
-                        Toast.makeText(AddItemActivity.this,"Add Item Successfully!",Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(AddItemActivity.this,"Adding Item failed! \n"
-                                + "at least type a name!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddItemActivity.this, "Add Item Successfully!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AddItemActivity.this, "Adding Item failed! \n"
+                                + "at least type a name!", Toast.LENGTH_SHORT).show();
                     }
 
                 }
             }
         });
 
+
+        /*
+        * Purchased List View
+        *
+        * */
+        final RecyclerView purchasedRecyclerView = (RecyclerView) findViewById(R.id.purchased_recyclerView);
+        LinearLayoutManager purchasedListLayoutManager =new LinearLayoutManager(this);
+        purchasedRecyclerView.setLayoutManager(purchasedListLayoutManager);
+        purchasedListAdapter = new PurchasedListAdapter(purchasedList);
+        purchasedRecyclerView.setAdapter(purchasedListAdapter);
+
+        //test whether find data for purchasedList
+        Button button = findViewById(R.id.purchased_btn_finish);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String test = "";
+                for (ShoppingItem s : purchasedList){
+                    test += s.getName() + "\n" + Boolean.toString(s.isPurchased());
+                }
+                Toast.makeText(AddItemActivity.this,test, Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 }

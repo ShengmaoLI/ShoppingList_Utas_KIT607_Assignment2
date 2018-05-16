@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import Controller.DBUtility;
@@ -54,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                for (ShoppingItem s: shoppingItems){
-////                    if (s.isPurchased()){
-////                        s.save();
-////                        shoppingItems.remove(s);
-////                    }
-////
-////                }
-                shoppingItems.remove(0);
+                Iterator<ShoppingItem> itemIterator = shoppingItems.iterator();
+                while (itemIterator.hasNext()){
+                    ShoppingItem s = itemIterator.next();
+                    if (s.isPurchased() == true){
+                        s.update(s.getId());
+                        itemIterator.remove();
+                    }
+                }
                 itemDetailAdapter.notifyItemRangeRemoved(0,50);
             }
         });

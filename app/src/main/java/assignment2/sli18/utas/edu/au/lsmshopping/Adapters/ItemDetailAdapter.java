@@ -1,5 +1,8 @@
 package assignment2.sli18.utas.edu.au.lsmshopping.Adapters;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,7 +27,7 @@ import assignment2.sli18.utas.edu.au.lsmshopping.R;
 public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.ViewHolder> {
     private List<ShoppingItem> mShoppingItems;
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView itemImage;
         TextView itemName;
         TextView itemPrice;
@@ -35,7 +38,8 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
         ImageButton imgBtnEdit;
         RadioButton radioBtnPurchased;
         View itemView;
-        public ViewHolder(View view){
+
+        public ViewHolder(View view) {
             super(view);
             itemView = view;
             itemImage = (ImageView) view.findViewById(R.id.item_image);
@@ -51,15 +55,16 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
 
         }
     }
-    public ItemDetailAdapter(List<ShoppingItem> shoppingItems){
+
+    public ItemDetailAdapter(List<ShoppingItem> shoppingItems) {
         mShoppingItems = shoppingItems;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_detail,parent,false);
+        final View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_detail, parent, false);
 
         //set Listener for radio purchased
         final ViewHolder holder = new ViewHolder(view);
@@ -68,10 +73,10 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 ShoppingItem shoppingItem = mShoppingItems.get(position);
-                if ( !shoppingItem.isPurchased() ){
+                if (!shoppingItem.isPurchased()) {
                     shoppingItem.setPurchased(true);
                     holder.radioBtnPurchased.setChecked(true);
-                }else {
+                } else {
                     shoppingItem.setPurchased(false);
                     holder.radioBtnPurchased.setChecked(false);
                 }
@@ -85,7 +90,7 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
                 int position = holder.getAdapterPosition();
                 ShoppingItem shoppingItem = mShoppingItems.get(position);
                 Intent intent = new Intent(v.getContext(), AddItemActivity.class);
-                intent.putExtra("itemId",shoppingItem.getId());
+                intent.putExtra("itemId", shoppingItem.getId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -95,14 +100,30 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
         holder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                ShoppingItem shoppingItem = mShoppingItems.get(position);
-                Toast.makeText(v.getContext(),"you click to delete item named: " + shoppingItem.getName()
-                        + "-------" + position +"--------",Toast.LENGTH_SHORT).show();
-                DataSupport.delete(ShoppingItem.class, shoppingItem.getId());
-                mShoppingItems.remove(position);
-                //remove
-                notifyItemRemoved(position);
+                final int position = holder.getAdapterPosition();
+                final ShoppingItem shoppingItem = mShoppingItems.get(position);
+                Toast.makeText(v.getContext(), "you click to delete item named: " + shoppingItem.getName()
+                        + "-------" + position + "--------", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.itemView.getContext());
+                alertDialog.setTitle("Deleting Confirmation");
+                alertDialog.setMessage("Do you really want to delete this item?");
+                alertDialog.setCancelable(true);
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DataSupport.delete(ShoppingItem.class, shoppingItem.getId());
+                        mShoppingItems.remove(position);
+                        //remove
+                        notifyItemRemoved(position);
+                    }
+                });
+                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                alertDialog.show();
+
             }
         });
 
