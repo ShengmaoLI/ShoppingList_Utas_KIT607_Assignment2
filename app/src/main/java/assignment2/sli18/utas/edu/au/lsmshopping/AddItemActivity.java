@@ -31,7 +31,8 @@ public class AddItemActivity extends AppCompatActivity {
     private static PurchasedListAdapter purchasedListAdapter;
     //
     private List<ShoppingItem> purchasedList =
-            DataSupport.where("purchased = ?", "true").find(ShoppingItem.class);
+            DataSupport.findAll(ShoppingItem.class);
+//            DataSupport.where("purchased = ?", "true").find(ShoppingItem.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

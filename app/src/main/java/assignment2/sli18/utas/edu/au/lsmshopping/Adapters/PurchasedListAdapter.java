@@ -2,6 +2,7 @@ package assignment2.sli18.utas.edu.au.lsmshopping.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import Entity.ShoppingItem;
 import assignment2.sli18.utas.edu.au.lsmshopping.R;
 
 public class PurchasedListAdapter extends RecyclerView.Adapter<PurchasedListAdapter.ViewHolder> {
-    private List<ShoppingItem> mShoppingItems;
+    final private List<ShoppingItem> mShoppingItems;
 
     public PurchasedListAdapter(List<ShoppingItem> shoppingItems){
         mShoppingItems = shoppingItems;
@@ -47,6 +48,7 @@ public class PurchasedListAdapter extends RecyclerView.Adapter<PurchasedListAdap
             super(view);
             purchasedItemImg = view.findViewById(R.id.purchased_list_item_img);
             purchasedItemText = view.findViewById(R.id.purchased_list_item_name);
+
         }
     }
 
