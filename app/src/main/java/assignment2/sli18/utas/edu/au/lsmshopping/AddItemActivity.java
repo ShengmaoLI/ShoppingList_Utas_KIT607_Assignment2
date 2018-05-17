@@ -19,6 +19,8 @@ import android.widget.Toast;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import Controller.DBUtility;
@@ -30,15 +32,24 @@ public class AddItemActivity extends AppCompatActivity {
     private static final String TAG = "AddItemActivity";
     private static PurchasedListAdapter purchasedListAdapter;
     //
-    private List<ShoppingItem> purchasedList =
-            DataSupport.findAll(ShoppingItem.class);
-//            DataSupport.where("purchased = ?", "true").find(ShoppingItem.class);
+    private List<ShoppingItem> purchasedList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
+        //initialize data
+        List<ShoppingItem> tempList = DataSupport.findAll(ShoppingItem.class);
+        Iterator<ShoppingItem> itemIterator = tempList.iterator();
+        while (itemIterator.hasNext()){
+            ShoppingItem shoppingItem = itemIterator.next();
+            if (shoppingItem.isPurchased()){
+                purchasedList.add(shoppingItem);
+            }
+        }
+        Collections.sort(purchasedList);
         //remove initial title layout
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -46,9 +57,9 @@ public class AddItemActivity extends AppCompatActivity {
         }
 
         /*
-        * The section of editing
-        * The first section in this activity
-        * */
+         * The section of editing
+         * The first section in this activity
+         * */
         //get each views
 
         final EditText editName = findViewById(R.id.nameEdit);
@@ -71,6 +82,7 @@ public class AddItemActivity extends AppCompatActivity {
         }
 
 
+        //submit listener
         submitImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,14 +125,15 @@ public class AddItemActivity extends AppCompatActivity {
 
 
         /*
-        * Purchased List View
-        *
-        * */
+         * Purchased List View
+         *
+         * */
         final RecyclerView purchasedRecyclerView = (RecyclerView) findViewById(R.id.purchased_recyclerView);
-        LinearLayoutManager purchasedListLayoutManager =new LinearLayoutManager(this);
+        LinearLayoutManager purchasedListLayoutManager = new LinearLayoutManager(this);
         purchasedRecyclerView.setLayoutManager(purchasedListLayoutManager);
         purchasedListAdapter = new PurchasedListAdapter(purchasedList);
         purchasedRecyclerView.setAdapter(purchasedListAdapter);
+        purchasedListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
         //test whether find data for purchasedList
         Button button = findViewById(R.id.purchased_btn_finish);
@@ -128,10 +141,10 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String test = "";
-                for (ShoppingItem s : purchasedList){
+                for (ShoppingItem s : purchasedList) {
                     test += s.getName() + "\n" + Boolean.toString(s.isPurchased());
                 }
-                Toast.makeText(AddItemActivity.this,test, Toast.LENGTH_LONG).show();
+                Toast.makeText(AddItemActivity.this, test, Toast.LENGTH_LONG).show();
             }
         });
 

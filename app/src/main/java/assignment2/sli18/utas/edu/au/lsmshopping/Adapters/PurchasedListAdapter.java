@@ -2,7 +2,6 @@ package assignment2.sli18.utas.edu.au.lsmshopping.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +24,25 @@ public class PurchasedListAdapter extends RecyclerView.Adapter<PurchasedListAdap
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.purchased_list_item,parent,false);
+                .inflate(R.layout.list_purchased_item,parent,false);
         final ViewHolder holder = new ViewHolder(view);
+
+        holder.purchasedItemText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int postion = holder.getAdapterPosition();
+               mShoppingItems.remove(postion);
+               notifyItemRemoved(postion);
+            }
+        });
+        holder.purchasedItemImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int postion = holder.getAdapterPosition();
+                mShoppingItems.remove(postion);
+                notifyItemRemoved(postion);
+            }
+        });
         return holder;
     }
 

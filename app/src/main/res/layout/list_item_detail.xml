@@ -35,7 +35,7 @@
         android:layout_width="47dp"
         android:layout_height="41dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/img_btn_edit"
+        app:layout_constraintEnd_toStartOf="@+id/addList_img_btn_edit"
         app:layout_constraintTop_toBottomOf="@+id/item_comment"
         app:srcCompat="@android:drawable/ic_menu_delete" />
 
@@ -71,7 +71,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/img_btn_edit"
+        android:id="@+id/addList_img_btn_edit"
         android:layout_width="47dp"
         android:layout_height="41dp"
         android:layout_marginEnd="8dp"

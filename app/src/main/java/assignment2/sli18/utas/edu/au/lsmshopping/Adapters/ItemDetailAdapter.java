@@ -1,10 +1,8 @@
 package assignment2.sli18.utas.edu.au.lsmshopping.Adapters;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,7 +47,7 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
             itemQuantity = (TextView) view.findViewById(R.id.item_quantity);
             itemTag = (TextView) view.findViewById(R.id.item_tag);
             imgBtnDelete = (ImageButton) view.findViewById(R.id.img_btn_delete);
-            imgBtnEdit = (ImageButton) view.findViewById(R.id.img_btn_edit);
+            imgBtnEdit = (ImageButton) view.findViewById(R.id.addList_img_btn_edit);
             radioBtnPurchased = (RadioButton) view.findViewById(R.id.item_purchased_radio);
 
 
@@ -123,10 +121,8 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
                     }
                 });
                 alertDialog.show();
-
             }
         });
-
         return holder;
     }
 
@@ -136,9 +132,9 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
         holder.itemImage.setImageResource(R.drawable.ic_launcher_background);
         holder.itemName.setText(shoppingItem.getName());
         holder.itemTag.setText(shoppingItem.getTag());
-        holder.itemQuantity.setText(new Integer(shoppingItem.getQuantity()).toString());
+        holder.itemQuantity.setText(Integer.toString(shoppingItem.getQuantity()));
         holder.itemComment.setText(shoppingItem.getCommend());
-        holder.itemPrice.setText(new Double(shoppingItem.getPrice()).toString());
+        holder.itemPrice.setText(Double.toString(shoppingItem.getPrice()));
         holder.radioBtnPurchased.setChecked(shoppingItem.isPurchased());
     }
 

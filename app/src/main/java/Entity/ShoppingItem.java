@@ -1,10 +1,13 @@
 package Entity;
 
+import android.support.annotation.NonNull;
+
 import org.litepal.crud.DataSupport;
 
+import java.util.Comparator;
 import java.util.Date;
 
-public class ShoppingItem extends DataSupport{
+public class ShoppingItem extends DataSupport implements Comparable<ShoppingItem>{
     private int id;
     private String name = "";
     private int quantity = 0;
@@ -94,5 +97,11 @@ public class ShoppingItem extends DataSupport{
 
     public void setPurchased(boolean purchased) {
         this.purchased = purchased;
+    }
+
+    //sort by date
+    @Override
+    public int compareTo(@NonNull ShoppingItem o) {
+        return o.getDate().compareTo(this.getDate());
     }
 }

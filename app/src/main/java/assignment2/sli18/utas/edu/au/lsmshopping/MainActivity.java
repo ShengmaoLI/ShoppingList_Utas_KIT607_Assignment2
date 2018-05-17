@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 for (ShoppingItem s : getData()){
-                    Log.d(TAG, "onClick: " + s.getName() + s.isPurchased() + s.getId());
+                    Log.d(TAG, "onClick: " + s.getName() + s.isPurchased() + s.getId() + s.getDate());
                 }
             }
         });
