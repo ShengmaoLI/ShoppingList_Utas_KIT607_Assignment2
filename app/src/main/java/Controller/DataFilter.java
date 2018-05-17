@@ -1,5 +1,7 @@
 package Controller;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +15,15 @@ public class DataFilter {
 
     private DataFilter(){}
 
+    public static List<ShoppingItem> getUnpurchasedData() {
+        List<ShoppingItem> list = new ArrayList<>();
+        for (ShoppingItem s: DataSupport.findAll(ShoppingItem.class)){
+            if (!s.isPurchased()){
+                list.add(s);
+            }
+        }
+        return list;
+    }
     // TODO: 9/05/2018  计算总价
     public static double totalPrice(List<ShoppingItem> shoppingItemList){
         double totalPrice = 0;

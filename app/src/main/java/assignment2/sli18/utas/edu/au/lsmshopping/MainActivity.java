@@ -9,14 +9,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import Controller.DBUtility;
+import Controller.DataFilter;
 import Entity.ShoppingItem;
 import Entity.ShoppingList;
 import assignment2.sli18.utas.edu.au.lsmshopping.Adapters.ItemDetailAdapter;
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        shoppingItems = getData();
+        shoppingItems = DataFilter.getUnpurchasedData();
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
@@ -42,13 +45,12 @@ public class MainActivity extends AppCompatActivity {
         itemDetailAdapter = new ItemDetailAdapter(shoppingItems);
         recyclerView.setAdapter(itemDetailAdapter);
 
-        ImageButton imageButton = findViewById(R.id.main_img_btn_add);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton addImgBtn = findViewById(R.id.main_img_btn_add);
+        addImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (ShoppingItem s : getData()){
-                    Log.d(TAG, "onClick: " + s.getName() + s.isPurchased() + s.getId() + s.getDate());
-                }
+                // TODO: 17/5/18 Addition symbol
+                Toast.makeText(MainActivity.this, "Addition symbol Listener",Toast.LENGTH_SHORT).show();
             }
         });
         Button btnFinish = (Button) findViewById(R.id.btn_finish);
@@ -59,24 +61,17 @@ public class MainActivity extends AppCompatActivity {
                 while (itemIterator.hasNext()){
                     ShoppingItem s = itemIterator.next();
                     if (s.isPurchased() == true){
+                        s.setDate(new Date());
                         s.update(s.getId());
                         itemIterator.remove();
+                        Log.d(TAG, "onClick: \n" + s.getName() + s.getDate());
                     }
                 }
                 itemDetailAdapter.notifyItemRangeRemoved(0,50);
+                itemDetailAdapter.notifyDataSetChanged();
             }
         });
-
-
     }
 
-    public static List<ShoppingItem> getData() {
-            List<ShoppingItem> list = new ArrayList<>();
-            for (ShoppingItem s: DataSupport.findAll(ShoppingItem.class)){
-                if (!s.isPurchased()){
-                    list.add(s);
-                }
-            }
-            return list;
-    }
+
 }

@@ -15,9 +15,12 @@ import assignment2.sli18.utas.edu.au.lsmshopping.R;
 
 public class PurchasedListAdapter extends RecyclerView.Adapter<PurchasedListAdapter.ViewHolder> {
     final private List<ShoppingItem> mShoppingItems;
+    final private AddedListAdapter addedListAdapter;
 
-    public PurchasedListAdapter(List<ShoppingItem> shoppingItems){
+    public PurchasedListAdapter(List<ShoppingItem> shoppingItems, AddedListAdapter addedListAdapter){
         mShoppingItems = shoppingItems;
+        this.addedListAdapter = addedListAdapter;
+        //-->set two adaptor to notify the change of data
     }
 
     @NonNull

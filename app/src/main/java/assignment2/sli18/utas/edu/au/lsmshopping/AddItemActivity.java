@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
+import org.w3c.dom.ProcessingInstruction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,15 +26,16 @@ import java.util.List;
 
 import Controller.DBUtility;
 import Entity.ShoppingItem;
+import assignment2.sli18.utas.edu.au.lsmshopping.Adapters.AddedListAdapter;
 import assignment2.sli18.utas.edu.au.lsmshopping.Adapters.PurchasedListAdapter;
 
 public class AddItemActivity extends AppCompatActivity {
 
     private static final String TAG = "AddItemActivity";
     private static PurchasedListAdapter purchasedListAdapter;
-    //
+    private static AddedListAdapter addedListAdapter;
     private List<ShoppingItem> purchasedList = new ArrayList<>();
-
+    private static List<ShoppingItem> addedList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,13 +142,27 @@ public class AddItemActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String test = "";
-                for (ShoppingItem s : purchasedList) {
-                    test += s.getName() + "\n" + Boolean.toString(s.isPurchased());
-                }
-                Toast.makeText(AddItemActivity.this, test, Toast.LENGTH_LONG).show();
+//                String test = "";
+//                for (ShoppingItem s : purchasedList) {
+//                    test += s.getName() + " - "+ s.getDate() + " - " + Boolean.toString(s.isPurchased()) + "\n";
+//                }
+//
+//                Log.d(TAG, "onClick: \n" + test);
             }
         });
+
+
+        /*
+        * added List View
+        *
+        * */
+        final RecyclerView addedRecyclerView = (RecyclerView) findViewById(R.id.added_list_recyclerView);
+        LinearLayoutManager addedListLayoutManager = new LinearLayoutManager(this);
+        addedRecyclerView.setLayoutManager(addedListLayoutManager);
+        // TODO: 17/5/18 change the list to added list --> it should be a temp list
+        addedListAdapter = new AddedListAdapter(addedList);
+        addedRecyclerView.setAdapter(addedListAdapter);
+
 
     }
 }
