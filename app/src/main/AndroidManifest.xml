@@ -10,7 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,15 +20,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AddItemActivity"
-                  android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name=".AddItemActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.AddItemActivity" />
 
             </intent-filter>
         </activity>
 
-        <activity android:name=".StatisticsActivity">
+        <activity
+            android:name=".StatisticsActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.StatisticsActivity" />
 

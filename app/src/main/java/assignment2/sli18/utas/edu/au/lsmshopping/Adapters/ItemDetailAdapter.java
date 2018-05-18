@@ -49,8 +49,6 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
             imgBtnDelete = (ImageButton) view.findViewById(R.id.img_btn_delete);
             imgBtnEdit = (ImageButton) view.findViewById(R.id.addList_img_btn_edit);
             radioBtnPurchased = (RadioButton) view.findViewById(R.id.item_purchased_radio);
-
-
         }
     }
 
@@ -94,14 +92,11 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
         });
 
         //set Listener for Delete Button
-        // TODO: 14/05/2018 Need to make confirmed alteration
         holder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final int position = holder.getAdapterPosition();
                 final ShoppingItem shoppingItem = mShoppingItems.get(position);
-                Toast.makeText(v.getContext(), "you click to delete item named: " + shoppingItem.getName()
-                        + "-------" + position + "--------", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.itemView.getContext());
                 alertDialog.setTitle("Deleting Confirmation");
                 alertDialog.setMessage("Do you really want to delete this item?");
@@ -111,7 +106,6 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
                     public void onClick(DialogInterface dialog, int which) {
                         DataSupport.delete(ShoppingItem.class, shoppingItem.getId());
                         mShoppingItems.remove(position);
-                        //remove
                         notifyItemRemoved(position);
                     }
                 });

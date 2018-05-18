@@ -21,10 +21,12 @@ import org.w3c.dom.ProcessingInstruction;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import Controller.DBUtility;
+import Controller.DataFilter;
 import Entity.ShoppingItem;
 import assignment2.sli18.utas.edu.au.lsmshopping.Adapters.AddedListAdapter;
 import assignment2.sli18.utas.edu.au.lsmshopping.Adapters.PurchasedListAdapter;
@@ -32,10 +34,10 @@ import assignment2.sli18.utas.edu.au.lsmshopping.Adapters.PurchasedListAdapter;
 public class AddItemActivity extends AppCompatActivity {
 
     private static final String TAG = "AddItemActivity";
-    private static PurchasedListAdapter purchasedListAdapter;
-    private static AddedListAdapter addedListAdapter;
-    private List<ShoppingItem> purchasedList = new ArrayList<>();
-    private static List<ShoppingItem> addedList = new ArrayList<>();
+    public static PurchasedListAdapter purchasedListAdapter;
+    public static AddedListAdapter addedListAdapter;
+    public static List<ShoppingItem> purchasedList = DataFilter.getPurchasedData();
+    public static List<ShoppingItem> addedList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +45,8 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
 
         //initialize data
-        List<ShoppingItem> tempList = DataSupport.findAll(ShoppingItem.class);
-        Iterator<ShoppingItem> itemIterator = tempList.iterator();
-        while (itemIterator.hasNext()){
-            ShoppingItem shoppingItem = itemIterator.next();
-            if (shoppingItem.isPurchased()){
-                purchasedList.add(shoppingItem);
-            }
-        }
-        Collections.sort(purchasedList);
+        purchasedList = DataFilter.getPurchasedData();
+
         //remove initial title layout
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -62,8 +57,8 @@ public class AddItemActivity extends AppCompatActivity {
          * The section of editing
          * The first section in this activity
          * */
-        //get each views
 
+        //get each views
         final EditText editName = findViewById(R.id.nameEdit);
         final EditText editTag = findViewById(R.id.tagEdit);
         final EditText editComment = findViewById(R.id.commentEdit);
@@ -81,9 +76,10 @@ public class AddItemActivity extends AppCompatActivity {
             editComment.setText(shoppingItem.getCommend());
             editPrice.setText(Double.toString(shoppingItem.getPrice()));
             editQuantity.setText(Integer.toString(shoppingItem.getQuantity()));
+            //start editing mode
+            ((RecyclerView) findViewById(R.id.purchased_recyclerView)).setVisibility(View.INVISIBLE);
+            ((RecyclerView) findViewById(R.id.added_list_recyclerView)).setVisibility(View.INVISIBLE);
         }
-
-
         //submit listener
         submitImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +91,7 @@ public class AddItemActivity extends AppCompatActivity {
                     shoppingItem.setCommend(editComment.getText().toString());
                     shoppingItem.setPrice(Double.parseDouble(editPrice.getText().toString()));
                     shoppingItem.setQuantity(Integer.parseInt(editQuantity.getText().toString()));
+
                     if (!shoppingItem.getName().equals("")) {
                         shoppingItem.save();
                         MainActivity.itemDetailAdapter.notifyDataSetChanged();
@@ -103,6 +100,7 @@ public class AddItemActivity extends AppCompatActivity {
                         Toast.makeText(AddItemActivity.this, "Editing Item failed! \n"
                                 + "at least type a name!", Toast.LENGTH_SHORT).show();
                     }
+
                 } else {
                     Double price = !editPrice.getText().toString().equals("") ? Double.parseDouble(editPrice.getText().toString()) : 0;
                     Integer quantity = !editQuantity.getText().toString().equals("") ? Integer.parseInt(editQuantity.getText().toString()) : 0;
@@ -113,14 +111,13 @@ public class AddItemActivity extends AppCompatActivity {
                     shoppingItem.setPrice(price);
                     shoppingItem.setQuantity(quantity);
                     if (!shoppingItem.getName().equals("")) {
-                        shoppingItem.save();
-                        MainActivity.itemDetailAdapter.notifyDataSetChanged();
+                        addedList.add(shoppingItem);
+                        addedListAdapter.notifyDataSetChanged();
                         Toast.makeText(AddItemActivity.this, "Add Item Successfully!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(AddItemActivity.this, "Adding Item failed! \n"
                                 + "at least type a name!", Toast.LENGTH_SHORT).show();
                     }
-
                 }
             }
         });
@@ -137,17 +134,22 @@ public class AddItemActivity extends AppCompatActivity {
         purchasedRecyclerView.setAdapter(purchasedListAdapter);
         purchasedListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-        //test whether find data for purchasedList
-        Button button = findViewById(R.id.purchased_btn_finish);
-        button.setOnClickListener(new View.OnClickListener() {
+        // TODO: 18/05/2018 need to complete this listener
+        Button finishBtn = findViewById(R.id.purchased_btn_finish);
+        finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String test = "";
-//                for (ShoppingItem s : purchasedList) {
-//                    test += s.getName() + " - "+ s.getDate() + " - " + Boolean.toString(s.isPurchased()) + "\n";
-//                }
-//
-//                Log.d(TAG, "onClick: \n" + test);
+                Iterator<ShoppingItem> itemIterator = addedList.iterator();
+                while (itemIterator.hasNext()){
+                    ShoppingItem shoppingItem = itemIterator.next();
+                    shoppingItem.save();
+                    MainActivity.shoppingItems.add(shoppingItem);
+                    itemIterator.remove();
+                }
+                addedListAdapter.notifyDataSetChanged();
+                MainActivity.itemDetailAdapter.notifyDataSetChanged();
+                Intent intent = new Intent(AddItemActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -156,6 +158,7 @@ public class AddItemActivity extends AppCompatActivity {
         * added List View
         *
         * */
+
         final RecyclerView addedRecyclerView = (RecyclerView) findViewById(R.id.added_list_recyclerView);
         LinearLayoutManager addedListLayoutManager = new LinearLayoutManager(this);
         addedRecyclerView.setLayoutManager(addedListLayoutManager);
@@ -163,6 +166,11 @@ public class AddItemActivity extends AppCompatActivity {
         addedListAdapter = new AddedListAdapter(addedList);
         addedRecyclerView.setAdapter(addedListAdapter);
 
+
+    }
+
+    // TODO: 18/05/2018 set edit paras, to link to AddListAdaptor, to allow editing for added list 
+    public  void setEditPara(){
 
     }
 }

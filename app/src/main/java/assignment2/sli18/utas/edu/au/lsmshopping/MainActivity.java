@@ -14,6 +14,8 @@ import android.widget.Toast;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -25,26 +27,35 @@ import Entity.ShoppingList;
 import assignment2.sli18.utas.edu.au.lsmshopping.Adapters.ItemDetailAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    //---
+
+    /*
+     * set static modifier for this adapter (itemDetailAdapter) since I need to notify the adapter that the data is changed
+     * in AddItemActivity (another activity for this simple project)
+     */
     static ItemDetailAdapter itemDetailAdapter;
-   //---
-    private static final String TAG = "MainActivity";
-    private List<ShoppingItem> shoppingItems = new ArrayList<>();
+    private static final String TAG = "MainActivity";// TODO: 18/05/2018  TAG is used for test, need to be removed after completing whole project
+    public static List<ShoppingItem> shoppingItems = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        shoppingItems = DataFilter.getUnpurchasedData();
         setContentView(R.layout.activity_main);
+        //get data that the user does not purchase.
+        shoppingItems = DataFilter.getUnpurchasedData();
+        //remove action bar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
             actionBar.hide();
         }
+
+        //initialize recyclerView in main activity
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_main_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         itemDetailAdapter = new ItemDetailAdapter(shoppingItems);
         recyclerView.setAdapter(itemDetailAdapter);
 
+        //set the listener for ImageButton of addition (the mid of the view, "Addition Symbol")
         ImageButton addImgBtn = findViewById(R.id.main_img_btn_add);
         addImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Addition symbol Listener",Toast.LENGTH_SHORT).show();
             }
         });
+
+        //set listener and logic for "Finish" Button
         Button btnFinish = (Button) findViewById(R.id.btn_finish);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,14 +77,11 @@ public class MainActivity extends AppCompatActivity {
                         s.setDate(new Date());
                         s.update(s.getId());
                         itemIterator.remove();
-                        Log.d(TAG, "onClick: \n" + s.getName() + s.getDate());
                     }
                 }
-                itemDetailAdapter.notifyItemRangeRemoved(0,50);
                 itemDetailAdapter.notifyDataSetChanged();
             }
         });
     }
-
 
 }

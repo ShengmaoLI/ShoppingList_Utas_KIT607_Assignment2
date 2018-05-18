@@ -7,7 +7,7 @@ import org.litepal.crud.DataSupport;
 import java.util.Comparator;
 import java.util.Date;
 
-public class ShoppingItem extends DataSupport implements Comparable<ShoppingItem>{
+public class ShoppingItem extends DataSupport{
     private int id;
     private String name = "";
     private int quantity = 0;
@@ -97,11 +97,5 @@ public class ShoppingItem extends DataSupport implements Comparable<ShoppingItem
 
     public void setPurchased(boolean purchased) {
         this.purchased = purchased;
-    }
-
-    //sort by date
-    @Override
-    public int compareTo(@NonNull ShoppingItem o) {
-        return o.getDate().compareTo(this.getDate());
     }
 }

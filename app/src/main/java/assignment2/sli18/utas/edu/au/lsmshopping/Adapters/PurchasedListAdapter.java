@@ -7,19 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.Collections;
 import java.util.List;
 
+import Controller.DataFilter;
 import Entity.ShoppingItem;
+import assignment2.sli18.utas.edu.au.lsmshopping.AddItemActivity;
 import assignment2.sli18.utas.edu.au.lsmshopping.R;
 
 public class PurchasedListAdapter extends RecyclerView.Adapter<PurchasedListAdapter.ViewHolder> {
     final private List<ShoppingItem> mShoppingItems;
-    final private AddedListAdapter addedListAdapter;
+    //final private AddedListAdapter addedListAdapter;
 
-    public PurchasedListAdapter(List<ShoppingItem> shoppingItems, AddedListAdapter addedListAdapter){
+    public PurchasedListAdapter(List<ShoppingItem> shoppingItems) {
         mShoppingItems = shoppingItems;
-        this.addedListAdapter = addedListAdapter;
+        //this.addedListAdapter = addedListAdapter;
         //-->set two adaptor to notify the change of data
     }
 
@@ -27,21 +31,27 @@ public class PurchasedListAdapter extends RecyclerView.Adapter<PurchasedListAdap
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_purchased_item,parent,false);
+                .inflate(R.layout.list_purchased_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
 
         holder.purchasedItemText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final int postion = holder.getAdapterPosition();
-               mShoppingItems.remove(postion);
-               notifyItemRemoved(postion);
+                ShoppingItem shoppingItem = DataFilter.copyShoppingItem(mShoppingItems.get(postion));
+                AddItemActivity.addedList.add(shoppingItem);
+                AddItemActivity.addedListAdapter.notifyDataSetChanged();
+                mShoppingItems.remove(postion);
+                notifyItemRemoved(postion);
             }
         });
         holder.purchasedItemImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final int postion = holder.getAdapterPosition();
+                ShoppingItem shoppingItem = DataFilter.copyShoppingItem(mShoppingItems.get(postion));
+                AddItemActivity.addedList.add(shoppingItem);
+                AddItemActivity.addedListAdapter.notifyDataSetChanged();
                 mShoppingItems.remove(postion);
                 notifyItemRemoved(postion);
             }
@@ -63,6 +73,7 @@ public class PurchasedListAdapter extends RecyclerView.Adapter<PurchasedListAdap
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView purchasedItemImg;
         TextView purchasedItemText;
+
         public ViewHolder(View view) {
             super(view);
             purchasedItemImg = view.findViewById(R.id.purchased_list_item_img);

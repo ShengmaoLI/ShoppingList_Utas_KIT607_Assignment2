@@ -3,7 +3,10 @@ package Controller;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import Entity.ShoppingItem;
 
@@ -15,6 +18,36 @@ public class DataFilter {
 
     private DataFilter(){}
 
+
+    //copy a new ShoppingItem and set it to unpurchased
+    public static ShoppingItem copyShoppingItem(ShoppingItem s){
+        ShoppingItem shoppingItem = new ShoppingItem();
+        shoppingItem.setName(s.getName());
+        shoppingItem.setPrice(s.getPrice());
+        shoppingItem.setCommend(s.getCommend());
+        shoppingItem.setTag(s.getTag());
+        shoppingItem.setQuantity(s.getQuantity());
+        shoppingItem.setImage(s.getImage());
+        return shoppingItem;
+    }
+    //initialize data (purchased items and sort by date)
+    public static List<ShoppingItem> getPurchasedData(){
+        List<ShoppingItem> tempList = DataSupport.findAll(ShoppingItem.class);
+        Iterator<ShoppingItem> itemIterator = tempList.iterator();
+        while (itemIterator.hasNext()){
+            ShoppingItem shoppingItem = itemIterator.next();
+            if (!shoppingItem.isPurchased()){
+                itemIterator.remove();
+            }
+        }
+        Collections.sort(tempList, new Comparator<ShoppingItem>() {
+            @Override
+            public int compare(ShoppingItem o1, ShoppingItem o2) {
+                return o2.getDate().compareTo(o1.getDate());
+            }
+        });
+        return tempList;
+    }
     public static List<ShoppingItem> getUnpurchasedData() {
         List<ShoppingItem> list = new ArrayList<>();
         for (ShoppingItem s: DataSupport.findAll(ShoppingItem.class)){
