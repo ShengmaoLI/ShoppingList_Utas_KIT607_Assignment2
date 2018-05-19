@@ -1,5 +1,6 @@
 package Entity;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import org.litepal.crud.DataSupport;
@@ -11,7 +12,7 @@ public class ShoppingItem extends DataSupport{
     private int id;
     private String name = "";
     private int quantity = 0;
-    private String image = "";
+    private String image;
     private String tag = "";
     private String commend = "";
     private int listId;
@@ -48,7 +49,7 @@ public class ShoppingItem extends DataSupport{
     }
 
     public void setImage(String image) {
-        this.image = image != null ? image : "";
+        this.image = image;
     }
 
     public String getTag() {

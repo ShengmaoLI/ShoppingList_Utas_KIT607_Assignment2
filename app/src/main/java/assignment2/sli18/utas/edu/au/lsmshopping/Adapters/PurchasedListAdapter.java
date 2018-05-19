@@ -2,6 +2,7 @@ package assignment2.sli18.utas.edu.au.lsmshopping.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,10 @@ public class PurchasedListAdapter extends RecyclerView.Adapter<PurchasedListAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ShoppingItem shoppingItem = mShoppingItems.get(position);
+        // TODO: 19/05/2018 后面删除
+        Log.d("PurAdapter Line 67", "onBindViewHolder: " + shoppingItem.getImage());
         holder.purchasedItemText.setText(shoppingItem.getName());
+        AddItemActivity.disPlayImage(shoppingItem.getImage(),holder.purchasedItemImg);
     }
 
     @Override

@@ -1,8 +1,21 @@
 package Controller;
 
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.widget.ImageView;
+
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import Entity.ShoppingItem;
@@ -59,69 +72,28 @@ public class DBUtility {
         return DataSupport.findAll(ShoppingList.class);
     }
 
-    // Test
-    public static void insertExampleData(){
-        //List1
-        ShoppingList list1 = new ShoppingList();
-        list1.setName("LiquidFood");
-        ShoppingItem a = new ShoppingItem();
-        a.setName("Milk");
-        a.setQuantity(5);
-        a.setImage("Image");
-        a.setTag("DailyFood");
-        a.setListId(1);
-        a.setPrice(5);
-        a.setPurchased(true);
-        ShoppingItem b = new ShoppingItem();
-        b.setName("Soy");
-        b.setQuantity(5);
-        b.setImage("Image");
-        b.setTag("DailyFood");
-        b.setListId(1);
-        b.setPrice(3);
-        b.setPurchased(true);
-        ShoppingItem c = new ShoppingItem();
-        c.setName("Coke");
-        c.setQuantity(5);
-        c.setImage("Image");
-        c.setTag("DailyFood");
-        c.setListId(1);
-        c.setPrice(2);
-        c.setPurchased(true);
-        DBUtility.insert(list1);
-        DBUtility.insert(a);
-        DBUtility.insert(b);
-        DBUtility.insert(c);
-        //List2
-        ShoppingList list2 = new ShoppingList();
-        list2.setName("Fruit");
-        ShoppingItem a1 = new ShoppingItem();
-        a1.setName("Banana");
-        a1.setQuantity(5);
-        a1.setImage("Image");
-        a1.setTag("I don't like like");
-        a1.setListId(2);
-        a1.setPrice(5);
-        a1.setPurchased(true);
-        ShoppingItem b1 = new ShoppingItem();
-        b1.setName("Apple");
-        b1.setQuantity(5);
-        b1.setImage("Image");
-        b1.setTag("I like");
-        b1.setListId(2);
-        b1.setPrice(3);
-        b1.setPurchased(true);
-        ShoppingItem c1 = new ShoppingItem();
-        c1.setName("Kiwi");
-        c1.setQuantity(5);
-        c1.setImage("Image");
-        c1.setTag("I like");
-        c1.setListId(2);
-        c1.setPrice(2);
-        c1.setPurchased(true);
-        DBUtility.insert(list2);
-        DBUtility.insert(a1);
-        DBUtility.insert(b1);
-        DBUtility.insert(c1);
+    public static void sizeCompress(Bitmap bmp, File file) {
+        // 尺寸压缩倍数,值越大，图片尺寸越小
+        int ratio = 8;
+        // 压缩Bitmap到对应尺寸
+        Bitmap result = Bitmap.createBitmap(bmp.getWidth() / ratio, bmp.getHeight() / ratio, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Rect rect = new Rect(0, 0, bmp.getWidth() / ratio, bmp.getHeight() / ratio);
+        canvas.drawBitmap(bmp, null, rect, null);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // 把压缩后的数据存放到baos中
+        result.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+
+
 }

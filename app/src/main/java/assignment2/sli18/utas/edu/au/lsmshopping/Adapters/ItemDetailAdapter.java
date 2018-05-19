@@ -3,8 +3,11 @@ package assignment2.sli18.utas.edu.au.lsmshopping.Adapters;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +19,12 @@ import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import Entity.ShoppingItem;
 import assignment2.sli18.utas.edu.au.lsmshopping.AddItemActivity;
+import assignment2.sli18.utas.edu.au.lsmshopping.MainActivity;
 import assignment2.sli18.utas.edu.au.lsmshopping.R;
 
 public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.ViewHolder> {
@@ -123,7 +128,9 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ShoppingItem shoppingItem = mShoppingItems.get(position);
-        holder.itemImage.setImageResource(R.drawable.ic_launcher_background);
+        Log.d("---", "onBindViewHolder: \n" + shoppingItem.getName() + "\n" + shoppingItem.getImage());
+
+        AddItemActivity.disPlayImage(shoppingItem.getImage(), holder.itemImage);
         holder.itemName.setText(shoppingItem.getName());
         holder.itemTag.setText(shoppingItem.getTag());
         holder.itemQuantity.setText(Integer.toString(shoppingItem.getQuantity()));

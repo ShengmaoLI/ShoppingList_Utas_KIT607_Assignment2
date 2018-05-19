@@ -76,15 +76,12 @@
 
 
     <ImageButton
-        android:id="@+id/imgEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="8dp"
+        android:id="@+id/imgEdit_take_photo"
+        android:layout_width="39dp"
+        android:layout_height="34dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/textView10"
         app:layout_constraintStart_toStartOf="@+id/item_img_add"
         app:layout_constraintTop_toBottomOf="@+id/item_img_add"
         app:srcCompat="@android:drawable/ic_menu_camera" />
@@ -267,6 +264,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/purchased_btn_finish"
         app:layout_constraintEnd_toStartOf="@+id/purchased_btn_finish"
         app:layout_constraintTop_toTopOf="@+id/purchased_btn_finish" />
+
+    <ImageButton
+        android:id="@+id/imgEdit_choose_gallery"
+        android:layout_width="39dp"
+        android:layout_height="34dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
+        app:layout_constraintStart_toEndOf="@+id/imgEdit_take_photo"
+        app:layout_constraintTop_toTopOf="@+id/imgEdit_take_photo"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
 
 </android.support.constraint.ConstraintLayout>
