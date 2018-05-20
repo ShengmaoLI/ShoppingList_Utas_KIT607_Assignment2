@@ -1,10 +1,13 @@
 package assignment2.sli18.utas.edu.au.lsmshopping;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -81,6 +84,33 @@ public class MainActivity extends AppCompatActivity {
                 }
                 itemDetailAdapter.notifyDataSetChanged();
             }
+        });
+
+        //set Listener and logic for "Expenditure" Button
+        Button expBtn = findViewById(R.id.main_expenditure);
+        expBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //set Listener and logic for "Share" Button
+        final Button shaBtn = findViewById(R.id.main_share);
+        shaBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    String shoppingList = "Shopping List\n";
+                    for (ShoppingItem shoppingItem : shoppingItems){
+                        shoppingList += "---" + shoppingItem.getName() + "---\n";
+                        shoppingList += "price: " + shoppingItem.getPrice() + "$\n";
+                        shoppingList += "quantity: x" + shoppingItem.getQuantity() + "\n";
+                    }
+                    Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"+"0416177711"));
+                    intent.putExtra("sms_body", shoppingList);
+                    startActivity(intent);
+                }
         });
     }
 

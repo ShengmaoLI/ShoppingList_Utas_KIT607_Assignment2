@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -128,9 +130,10 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ShoppingItem shoppingItem = mShoppingItems.get(position);
-        Log.d("---", "onBindViewHolder: \n" + shoppingItem.getName() + "\n" + shoppingItem.getImage());
-
-        AddItemActivity.disPlayImage(shoppingItem.getImage(), holder.itemImage);
+        if (shoppingItem.getImage() != null){
+            Uri imageUri = Uri.fromFile(new File(shoppingItem.getImage()));
+            holder.itemImage.setImageURI(imageUri);
+        }
         holder.itemName.setText(shoppingItem.getName());
         holder.itemTag.setText(shoppingItem.getTag());
         holder.itemQuantity.setText(Integer.toString(shoppingItem.getQuantity()));

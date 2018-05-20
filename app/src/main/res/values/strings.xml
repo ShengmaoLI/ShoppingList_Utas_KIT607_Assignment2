@@ -17,4 +17,11 @@
     <string name="Expenditure">Expenditure</string>
     <string name="Finish">Finish</string>
     <string name="Finish_Btn">Finish</string>
+    <string name="Share">Share</string>
+    <string name="Search">Search names or tags</string>
+    <string name="start_date">Start</string>
+    <string name="end_date">End</string>
+    <string name="select_date_hint">Click Button to Select Date</string>
+    <string name="quantity_symbol">x</string>
+    <string name="expenditure_total">Total :</string>
 </resources>

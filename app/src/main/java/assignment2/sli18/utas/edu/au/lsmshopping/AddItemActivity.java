@@ -44,6 +44,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import Controller.DBUtility;
 import Controller.DataFilter;
 import Entity.ShoppingItem;
 import assignment2.sli18.utas.edu.au.lsmshopping.Adapters.AddedListAdapter;
@@ -54,7 +55,6 @@ public class AddItemActivity extends AppCompatActivity {
 
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
-    private Uri imageUri;
     private String shoppingItemImagePath;
     private ImageView itemImageAdd;
     private static final String TAG = "AddItemActivity";
@@ -88,9 +88,9 @@ public class AddItemActivity extends AppCompatActivity {
         final EditText editComment = findViewById(R.id.commentEdit);
         final EditText editPrice = findViewById(R.id.priceEdit);
         final EditText editQuantity = findViewById(R.id.quantityEdit);
+        final ImageView editImage = findViewById(R.id.item_img_add);
         itemImageAdd = findViewById(R.id.item_img_add);
         ImageButton takePhoto = findViewById(R.id.imgEdit_take_photo);
-        ImageButton chooseGallery = findViewById(R.id.imgEdit_choose_gallery);
         ImageButton submitImgBtn = findViewById(R.id.submit_add);
         //get data test
         final Integer itemId = getIntent().getIntExtra("itemId", -1);
@@ -101,6 +101,8 @@ public class AddItemActivity extends AppCompatActivity {
             editComment.setText(shoppingItem.getCommend());
             editPrice.setText(Double.toString(shoppingItem.getPrice()));
             editQuantity.setText(Integer.toString(shoppingItem.getQuantity()));
+            disPlayImage(shoppingItem.getImage(),editImage);
+
             //start editing mode
             ((RecyclerView) findViewById(R.id.purchased_recyclerView)).setVisibility(View.INVISIBLE);
             ((RecyclerView) findViewById(R.id.added_list_recyclerView)).setVisibility(View.INVISIBLE);
@@ -164,7 +166,6 @@ public class AddItemActivity extends AppCompatActivity {
         purchasedRecyclerView.setAdapter(purchasedListAdapter);
         purchasedListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-        // TODO: 18/05/2018 need to complete this listener
         Button finishBtn = findViewById(R.id.purchased_btn_finish);
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,45 +215,14 @@ public class AddItemActivity extends AppCompatActivity {
         final RecyclerView addedRecyclerView = (RecyclerView) findViewById(R.id.added_list_recyclerView);
         LinearLayoutManager addedListLayoutManager = new LinearLayoutManager(this);
         addedRecyclerView.setLayoutManager(addedListLayoutManager);
-        // TODO: 17/5/18 change the list to added list --> it should be a temp list
         addedListAdapter = new AddedListAdapter(addedList, AddItemActivity.this);
         addedRecyclerView.setAdapter(addedListAdapter);
 
-        // TODO: 19/05/2018 I'd doing here
         //take photo Listener --> to edit image
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File outputImage = new File(getExternalCacheDir(),
-                        "output_image"+ new Date().getTime() +".jpg");
-                try {
-                    if (outputImage.exists()) {
-                        outputImage.delete();
-                    }
-                    outputImage.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (Build.VERSION.SDK_INT >= 24) {
-                    imageUri = FileProvider.getUriForFile(AddItemActivity.this,
-                            "com.example.cameraablumtest.fileprovider",
-                            outputImage);
-                    shoppingItemImagePath = getImagePath(imageUri,null);
-                } else {
-                    imageUri = Uri.fromFile(outputImage);
-                    shoppingItemImagePath = getImagePath(imageUri,null);
-                }
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(intent, TAKE_PHOTO);
-            }
-        });
 
-        //choose gallery Listener --> edit image
-
-        chooseGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(AddItemActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
                         PackageManager.PERMISSION_GRANTED) {
@@ -262,34 +232,44 @@ public class AddItemActivity extends AppCompatActivity {
                 } else {
                     openAlbum();
                 }
+
             }
         });
 
-    }
 
-    public void showMessage(String s) {
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+        //set Listener and logic for "Share" Button
+        final Button shaBtn = findViewById(R.id.main_share);
+        shaBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String shoppingList = "Shopping List\n";
+                for (ShoppingItem shoppingItem : MainActivity.shoppingItems) {
+                    shoppingList += "---" + shoppingItem.getName() + "---\n";
+                    shoppingList += "price: " + shoppingItem.getPrice() + "$\n";
+                    shoppingList += "quantity: x" + shoppingItem.getQuantity() + "\n";
+                }
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + "0416177711"));
+                intent.putExtra("sms_body", shoppingList);
+                startActivity(intent);
+            }
+        });
+
+        //set Listener and logic for "Expenditure" Button
+        Button expBtn = findViewById(R.id.add_expenditure);
+        expBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddItemActivity.this, StatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case TAKE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver()
-                                .openInputStream(imageUri));
-                        itemImageAdd.setImageURI(imageUri);
 
-                        String t = getImagePath(imageUri,null);
-                        Log.d(TAG, "onActivityResult: " + imageUri);
-                        //Log.d(TAG, "onActivityResult: " + Uri.parse(t));
-                        //itemImageAdd.setImageURI(Uri.parse(t));
-                        //itemImageAdd.setImageBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
                 break;
             case CHOOSE_PHOTO:
                 if (resultCode == RESULT_OK) {
@@ -338,30 +318,34 @@ public class AddItemActivity extends AppCompatActivity {
                 String selection = MediaStore.Images.Media._ID + "=" + id;
                 imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                         selection);
-                shoppingItemImagePath = imagePath;
             } else if ("com.android.providers.downloads.documents".equals(uri
                     .getAuthority())) {
                 Uri contentUri = ContentUris
                         .withAppendedId(Uri.parse("content://downloads/public_downloads"),
                                 Long.valueOf(docId));
                 imagePath = getImagePath(contentUri, null);
-                shoppingItemImagePath = imagePath;
             }
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
             imagePath = getImagePath(uri, null);
-            shoppingItemImagePath = imagePath;
 
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
             imagePath = uri.getPath();
-            shoppingItemImagePath = imagePath;
 
         }
-        disPlayImage(imagePath, itemImageAdd);
+        File file = new File(getExternalCacheDir(),
+                "output_image" + new Date().getTime() + ".jpg");
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        DBUtility.samplingRateCompress(imagePath, file);
+        shoppingItemImagePath = file.getPath();
+        disPlayImage(shoppingItemImagePath, itemImageAdd);
     }
 
     private void handleImageBeforeKitKat(Intent data) {
         Uri uri = data.getData();
-        imageUri = data.getData();
         String imagePath = getImagePath(uri, null);
         shoppingItemImagePath = imagePath;
         disPlayImage(imagePath, itemImageAdd);
